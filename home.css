@@ -1,0 +1,153 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F8F8F8;
+}
+
+.container {
+    width: 1360px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+
+/* Шапка */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1FCECE;
+    padding: 15px;
+    color: #fff;
+}
+
+.header-left .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.header-right .icon {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.header-right .icon i {
+    margin-right: 8px; /* Отступ между иконкой и текстом */
+}
+
+.header-right .icon:hover {
+    color: #FFB726; /* Цвет при наведении */
+}
+
+
+
+/* Основной баннер */
+.banner {
+    background-image: url("img/mandarins.jfif");
+    background-color: #FFB726;
+    color: #fff;
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.banner p {
+    font-size: 24px;
+}
+
+/* О компании */
+.about {
+    background-color: #1FCECE;
+    padding: 40px;
+    margin-top: 40px;
+    border-radius: 10px;
+}
+
+.about h2 {
+    color: #fff;
+    font-size: 28px;
+}
+
+.about p {
+    color: #fff;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* Сведения о генеральном директоре */
+.director {
+    background-color: #389B9B;
+    padding: 40px;
+    margin-top: 40px;
+    border-radius: 10px;
+}
+
+.director h3 {
+    color: #fff;
+    font-size: 24px;
+}
+
+.director p {
+    color: #fff;
+    font-size: 18px;
+}
+
+/* Кнопки */
+.button {
+    background-color: #FF2626;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #FF5D5D;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .banner h1 {
+        font-size: 28px;
+    }
+
+    .banner p {
+        font-size: 18px;
+    }
+
+    .about h2, .director h3 {
+        font-size: 24px;
+    }
+
+    .about p, .director p {
+        font-size: 16px;
+    }
+
+    .button {
+        font-size: 18px;
+    }
+}

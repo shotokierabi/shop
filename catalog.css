@@ -1,0 +1,244 @@
+/* Сброс стилей */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+/* Строка поиска */
+.search-filter {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Отступ сверху */
+}
+
+.search-filter input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 50%; /* Сделаем строку поиска более узкой */
+}
+
+/* Основной контейнер с фиксированной шириной */
+.container {
+    display: flex;
+    gap: 20px;
+    max-width: 1360px; /* Уменьшили контейнер */
+    margin: 0 auto;
+}
+
+/* Боковая панель */
+.sidebar {
+    width: 200px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    color: #1FCECE; /* Основной цвет */
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #389B9B; /* Вторичный цвет а */
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.sidebar ul li a:hover {
+    color: #FFB726; /* Вторичный цвет а при наведении */
+}
+
+/* Стиль для активной категории */
+.sidebar ul li a.active {
+    color: #FFB726; /* Активный цвет категории */
+    font-weight: bold;
+}
+
+/* Каталог товаров */
+.catalog {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+    flex: 1;
+}
+
+.product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative; /* Для позиционирования скидки */
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Ограничение размера изображений в карточках товаров */
+.product-card img {
+    max-width: 100%;  /* Ограничение ширины изображения до 100% от родительского блока */
+    max-height: 200px; /* Ограничение высоты изображения до 200px */
+    object-fit: cover; /* Чтобы изображение не искажалось, а заполнило блок */
+    width: auto; /* Чтобы пропорции изображения сохранялись */
+}
+
+
+.product-card h2 {
+    font-size: 24px;
+    color: #1FCECE; /* Основной цвет */
+    margin: 10px 0;
+}
+
+.product-card .description {
+    font-size: 14px;
+    color: #777;
+    margin: 10px 0;
+}
+
+.product-card .price {
+    font-size: 18px;
+    color: #389B9B; /* Вторичный цвет а */
+    font-weight: bold;
+}
+
+/* Скидка в правом верхнем углу */
+.product-card .discount {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #FF2626; /* Вторичный цвет б для скидок */
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 1; /* Чтобы скидка была поверх изображения */
+}
+
+/* Кнопка "Добавить в корзину" */
+.add-to-cart {
+    background-color: #FF2626; /* Вторичный цвет б */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px; /* Отступ сверху для лучшего отображения */
+}
+
+.add-to-cart:hover {
+    background-color: #FF5D5D; /* Цвет при наведении */
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .catalog {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-card {
+        width: 100%;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+}
+
+
+/* Стиль для чекбокса */
+.search-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.search-filter input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 50%;
+}
+
+.discount-label {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.discount-label input[type="checkbox"] {
+    display: none; /* Скрываем стандартный чекбокс */
+}
+
+.discount-label .checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #389B9B; /* Цвет рамки */
+    border-radius: 4px;
+    margin-right: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.discount-label .checkmark::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #389B9B; /* Цвет чекбокса */
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.discount-label input[type="checkbox"]:checked + .checkmark {
+    border-color: #FF2626; /* Цвет рамки, когда чекбокс активен */
+}
+
+.discount-label input[type="checkbox"]:checked + .checkmark::after {
+    opacity: 1;
+}
