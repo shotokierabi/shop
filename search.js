@@ -33,7 +33,7 @@ function filterByCategory(category) {
     });
 
     // Добавляем активный класс выбранной категории
-    const activeCategoryLink = document.getElementById('category-' + category);
+    const activeCategoryLink = document.getElementById(category);
     if (activeCategoryLink) {
         activeCategoryLink.classList.add('active');
     }
