@@ -13,48 +13,6 @@ body {
 }
 
 
-
-/* Шапка */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1FCECE;
-    padding: 15px;
-    color: #fff;
-}
-
-.header-left .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
-    text-decoration: none;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-}
-
-.header-right .icon {
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-    margin-left: 20px;
-    display: flex;
-    align-items: center;
-}
-
-.header-right .icon i {
-    margin-right: 8px; /* Отступ между иконкой и текстом */
-}
-
-.header-right .icon:hover {
-    color: #FFB726; /* Цвет при наведении */
-}
-
-
-
 /* Основной баннер */
 .banner {
     background-image: url("img/mandarins.jfif");

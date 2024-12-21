@@ -15,7 +15,7 @@ include('controllers/account.php'); ?>
 <body>
     <?php include('header.php'); ?>
     <div class="container-fluid">
-        <div class="container">
+        <div class="container1">
             <div class="personal_account row">
                 <div class="col1">
                     <div class="col but">

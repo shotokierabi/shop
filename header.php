@@ -6,7 +6,7 @@
 
 <body>
     <header class="container-fluid">
-        <div class="container">
+        <div class="container1">
             <div class="row">
                 <div class="col">
                     <h1 class="logo">

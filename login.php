@@ -14,8 +14,8 @@ include('controllers/users.php'); ?>
 
 <body>
     <div class="back-reg"></div>
-    <div class="container reg-1">
-        <div class="container reg-2">
+    <div class="container1 reg-1">
+        <div class="container1 reg-2">
             <div class="home">
                 <a type="button" href="<?php echo BASE_URL ?>" aria-label="Закрыть"><i
                         class="fa-solid fa-xmark"></i></a>

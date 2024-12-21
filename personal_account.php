@@ -16,7 +16,7 @@ include('controllers/account.php'); ?>
     <?php include('header.php'); ?>
     <!--MAIN-->
     <div class="container-fluid">
-        <div class="container ">
+        <div class="container1 ">
             <?php foreach ($UserAll as $key => $u): ?>
                 <?php if ($u['id_user'] === $_SESSION['id']): ?>
                     <div class="personal_account row">

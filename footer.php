@@ -6,7 +6,7 @@
 
 <body>
     <div class="footer container-fluid">
-        <div class="container">
+        <div class="container1">
             <div class="row">
                 <div class="col logo">
                     <h1>
