@@ -1,4 +1,6 @@
 <?php
+ob_start(); // Включение буферизации вывода
+header('Content-Type: application/json; charset=utf-8');
 include (SITE_ROOT . '/db/db.php');
 
 // Получение ID текущего пользователя из сессии (например, id_user)
@@ -25,4 +27,5 @@ foreach ($products_in_cart as $product_in_cart) {
 }
 
 // Возврат JSON-ответа
+ob_end_clean(); // Очистка буфера перед выводом 
 echo json_encode($products);
