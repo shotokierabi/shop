@@ -1,7 +1,8 @@
 <?php
 include (SITE_ROOT . '/db/db.php');
+include('path.php');
 if (!$_SESSION) {
-    header('location: ' . BASE_URL . 'login.php');
+    header('location: ' . BASE_URL . '/login.php');
 } 
 
 $error_msg = [];

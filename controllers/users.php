@@ -3,7 +3,6 @@ include('db/db.php');
 
 $error_msg = '';
 
-
 function auth($user)
 {
     $_SESSION['id'] = $user['id_user'];
@@ -11,7 +10,6 @@ function auth($user)
 
 
 }
-
 
 //Регистрация
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-reg'])) {
@@ -56,18 +54,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit-reg'])) {
 
             $id = insert('user', $post);
 
-            $post_pa = [
+            $post_pa = [   
+                'id_pa' => $id,
                 'email' => $login,
                 'phone_number' => '',
                 'surname' => '',
                 'name' => $name,
                 'img' => $_POST['img'] = trim($img_name),
                 'address' => '',
-
                 'id_user' => $id
             ];
-
+ 
             insert('personal_account', $post_pa);
+
+            $post_sc = [
+                'id_sc' => $id,
+                'final_prices' => 0,
+                'id_pa' => $id
+            ];
+
+            insert('shopping_cart', $post_sc);
             $user = selectOne('user', ['id_user' => $id]);
 
             auth($user);
