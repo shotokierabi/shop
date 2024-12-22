@@ -17,16 +17,20 @@ include('controllers/prod.php'); ?>
     <?php include('header.php'); ?>
     <div class="product-detail">
         <div class="product-info">
-            <?php if (isset($_SESSION['id'])): ?>
-                <?php $prod = selectOne('product', ['id_product' => $id]); ?>
+            <?php if (isset($_GET['id'])): ?>
+                <?php $prod = selectOne('product', ['id_product' => $_GET['id']]); ?>
                     <div class="product-image-container">
-                        <img id="product-image" src="" alt="Изображение товара">
-                        <div id="discount-badge" class="discount-badge">Скидка 20%</div> <!-- Скидка в правом верхнем углу -->
+                        <img id="product-image" src="<?= BASE_URL . 'img/' . trim($prod['img']) ?>">
+                        <div id="discount-badge" class="discount-badge"><?=$prod['sale']?></div> <!-- Скидка в правом верхнем углу -->
                     </div>
                     <div class="details">
-                        <h2 id="product-name"><?=$p['name']?></h2>
-                        <p id="product-description">Описание товара</p>
-                        <p id="product-price">Цена: 500 ₽</p>
+                        <h2 id="product-name"><?=$prod['name']?></h2>
+                        <p id="product-description">Производитель: <?=$prod['manufacturer']?></p>
+                        <p id="product-description">Состав: <?=$prod['structure']?></p>
+                        <p id="product-description">Срок храниения: <?=$prod['expiration_date']?></p>
+                        <p id="product-description">Вес: <?=$prod['weight']?></p>
+                        <p id="product-description">Описание: <?=$prod['descriptions']?></p>
+                        <p id="product-price"><?=$prod['price']?> руб.</p>
                         <button id="add-to-cart">Добавить в корзину</button>
                     </div>
             <?php endif; ?>

@@ -26,11 +26,6 @@ include('controllers/account.php'); ?>
                                     профиль</a>
                             </div>
                             <div class="col but">
-                                <a class="button btn" href="orders.php?id= <?= $u['id_pa'] ?>" role="button">Мои заказы
-                                    (НАдо ли
-                                    мне это?)</a>
-                            </div>
-                            <div class="col but">
                                 <a class="button btn" href="pass.php?id= <?= $u['id_user'] ?>" role="button">Изменить
                                     пароль</a>
                             </div>
