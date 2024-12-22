@@ -132,6 +132,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_pass'])) {
 //Удаление
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['del_id'])) {
     $id = $_GET['del_id'];
+    $pa = selectOne('product', ['id_product' => $id]);
+    $id_user = $pa['id_user'];
+
+    deleteAll('user', 'id_user', $id_user);
     deleteAll('personal_account', 'id_pa', $id);
     header('location: ' . BASE_URL . 'logout.php');
 }

@@ -11,7 +11,7 @@ body {
 /* header */
 header {
     width: 100%;
-    background-color: #f4f4f4;
+    background-color: #fff;
     height: 50px;
     -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.10);
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.10);
@@ -390,11 +390,11 @@ header i {
     max-width: 700px;
 }
 
-.personal_account .col2_2 span{
+.personal_account .col2_2 span {
     color: #2d7a7a;
 }
 
-.personal_account .col2_2 h6{
+.personal_account .col2_2 h6 {
     font-size: 30px;
     color: #FFB726;
     margin: 0;
@@ -435,17 +435,18 @@ header i {
 }
 
 .personal_account .col2_2 .col3 {
+    padding-top: 5px;
     padding-bottom: 10px;
 }
 
-.personal_account .col2_2  .btn-cnt {
+.personal_account .col2_2 .btn-cnt {
     width: 400px;
     max-width: 420px;
     text-align: center;
     margin-top: 10px;
 }
 
-.personal_account .col2_2  .btn {
+.personal_account .col2_2 .btn {
     padding: 0;
     width: 100%;
     font-size: 20px;
@@ -458,16 +459,97 @@ header i {
     margin-top: 15px;
 }
 
-.personal_account .col2_2  .btn:hover {
+.personal_account .col2_2 .btn:hover {
     background-color: #FFB726;
     color: #f4f4f4;
-    ;
 }
 
-.personal_account .col2_2  .btn:active {
+.personal_account .col2_2 .btn:active {
     color: #FFB726;
     background-color: #f4f4f4;
     border: 1px solid #FFB726;
+}
+
+/*admin*/
+.personal_account .rowProd {
+    display: grid;
+    grid-template-columns: 5% 35% 10% 10% 10% 16% 14%;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #2d7a7a;
+    margin-bottom: 10px;
+}
+
+.personal_account .rowProd1 {
+    display: grid;
+    grid-template-columns: 5% 35% 10% 10% 10% 16% 14%;
+    padding-bottom: 10px;
+}
+
+.personal_account .col-end{
+    text-align: right;
+}
+
+.personal_account .row50 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.personal_account .row50 .adbut {
+    text-align: right;
+}
+
+.personal_account .row50 a {
+    padding: 8px 35px 8px 35px;
+    width: 50%;
+    font-size: 20px;
+    color: #389B9B;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #389B9B;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+}
+
+.personal_account .row50  a:hover {
+    background-color: #FFB726;
+    color: #f4f4f4;
+    border: 0;
+}
+
+.personal_account .row50  a:active {
+    color: #FFB726;
+    background-color: #f4f4f4;
+    border: 1px solid #FFB726;
+}
+
+.admin .personal_account .col2_2 {
+    font-size: 24px;
+    color: #FFB726;
+    max-width: 100%;
+}
+
+.personal_account .col2_2 .row_admin{
+    display: grid;
+    grid-template-columns: 22% 4% 22% 4% 22% 4% 22%;
+}
+
+.personal_account .col2_2 textarea {
+    font-size: 20px;
+    width: 100%;
+    border-radius: 10px;
+    height: 30px;
+    background-color: #fff;
+    border: 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.personal_account .col2_2 textarea:focus {
+    color: #212529;
+    background-color: #fff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(231, 179, 120, 0.904);
 }
 
 /* other*/
@@ -475,5 +557,3 @@ header i {
     width: 1360px;
     margin: 0 auto;
 }
-
-.container-fluid {}
