@@ -1,36 +1,56 @@
 <?php
 session_start();
-include('path.php');
-include('controllers/prod.php');
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-if (isset($_POST['index'])) {
-    $productIndex = $_POST['index'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['index'])) {
+        $productIndex = intval($_POST['index']);
+        $exists = false;
 
-    $product = $prod->getProductById($productIndex);
-
-    if ($product) {
-        $found = false;
         foreach ($_SESSION['cart'] as &$item) {
-            if ($item['id'] == $productIndex) {
-                $item['quantity'] += 1;
-                $found = true;
+            if ($item['id'] === $productIndex) {
+                $item['quantity']++;
+                $exists = true;
                 break;
             }
         }
 
-        if (!$found) {
-            $_SESSION['cart'][] = [
-                'id' => $product['id_product'],
-                'name' => $product['name'],
-                'price' => $product['price'],
-                'quantity' => 1
-            ];
+        if (!$exists) {
+            $db = new PDO('mysql:host=localhost;dbname=your_database;charset=utf8', 'username', 'password'); // Замените на свои данные
+            $query = $db->prepare("SELECT id_product AS id, name, price FROM products WHERE id_product = ?");
+            $query->execute([$productIndex]);
+            $product = $query->fetch(PDO::FETCH_ASSOC);
+
+            if ($product) {
+                $product['quantity'] = 1;
+                $_SESSION['cart'][] = $product;
+            }
         }
     }
+
+    if (isset($_POST['delete'])) {
+        $productIndex = intval($_POST['delete']);
+        $_SESSION['cart'] = array_filter($_SESSION['cart'], function ($item) use ($productIndex) {
+            return $item['id'] !== $productIndex;
+        });
+    }
+
+    if (isset($_POST['decrease'])) {
+        $productIndex = intval($_POST['decrease']);
+        foreach ($_SESSION['cart'] as &$item) {
+            if ($item['id'] === $productIndex && $item['quantity'] > 1) {
+                $item['quantity']--;
+                break;
+            }
+        }
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode(['cart' => $_SESSION['cart']]);
+    exit;
 }
 ?>
 
@@ -43,188 +63,109 @@ if (isset($_POST['index'])) {
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #f5f5f5;
         }
         .container {
-            width: 1360px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
         .cart-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-        .item-info {
-            display: flex;
-            align-items: center;
-        }
-        .item-info img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            margin-right: 15px;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
             border-radius: 5px;
-        }
-        .item-name {
-            font-size: 18px;
-            margin: 0;
         }
         .item-controls {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-        .item-controls button {
-            background-color: #ff6b6b;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        .item-controls button:hover {
-            background-color: #ff4c4c;
-        }
-        .item-quantity {
-            font-size: 16px;
-        }
-        .total-price {
-            text-align: right;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
         .checkout-button {
             display: block;
+            width: 100%;
             text-align: center;
-            margin: 30px auto 0;
+            margin-top: 20px;
+            padding: 10px;
             background-color: #28a745;
-            color: #fff;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+            color: white;
             text-decoration: none;
-            cursor: pointer;
-        }
-        .checkout-button:hover {
-            background-color: #218838;
+            font-weight: bold;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Корзина</h1>
-        <div id="cart-items">
-        </div>
-        <p class="total-price">Итоговая цена: <span id="total-price">0</span> ₽</p>
-        <a href="Оплата.html" class="checkout-button" onclick="saveCart()">Перейти к оплате</a>
+        <div id="cart-items"></div>
+        <p class="total-price">Итого: <span id="total-price">0</span> ₽</p>
+        <a href="Оплата.html" class="checkout-button">Перейти к оплате</a>
     </div>
 
     <script>
-        const cart = {
-            items: []
-        };
+        const cartItemsContainer = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
 
-        <?php
-        if (isset($_SESSION['cart'])):
-            foreach ($_SESSION['cart'] as $item):
-        ?>
-            cart.items.push({
-                id: <?php echo $item['id']; ?>,
-                name: "<?php echo $item['name']; ?>",
-                price: <?php echo $item['price']; ?>, 
-                quantity: <?php echo $item['quantity']; ?>
-            });
-        <?php endforeach; endif; ?>
-
-        function updateTotalPrice() {
-            let total = 0;
-            cart.items.forEach(item => {
-                total += item.price * item.quantity;
-            });
-            document.getElementById('total-price').innerText = total;
+        function fetchCart() {
+            fetch(location.href, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+                .then(response => response.json())
+                .then(data => renderCart(data.cart))
+                .catch(error => console.error('Ошибка загрузки корзины:', error));
         }
 
-        function renderCart() {
-            const cartItemsContainer = document.getElementById('cart-items');
+        function renderCart(cart) {
             cartItemsContainer.innerHTML = '';
+            let total = 0;
 
-            cart.items.forEach(item => {
-                const cartItemElement = document.createElement('div');
-                cartItemElement.classList.add('cart-item');
-                cartItemElement.dataset.id = item.id;
-                cartItemElement.innerHTML = `
-                    <div class="item-info">
-                        <img src="product${item.id}.jpg" alt="Товар ${item.id}">
-                        <p class="item-name">${item.name}</p>
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item');
+                itemElement.dataset.id = item.id;
+                itemElement.innerHTML = `
+                    <div>
+                        <p>${item.name}</p>
+                        <p>${item.price} ₽</p>
                     </div>
                     <div class="item-controls">
-                        <button onclick="decreaseQuantity(${item.id})">-</button>
-                        <span class="item-quantity" id="quantity-${item.id}">${item.quantity}</span>
-                        <button onclick="increaseQuantity(${item.id})">+</button>
+                        <button onclick="updateQuantity(${item.id}, 'decrease')">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="updateQuantity(${item.id}, 'increase')">+</button>
                         <button onclick="removeItem(${item.id})">Удалить</button>
                     </div>
                 `;
-                cartItemsContainer.appendChild(cartItemElement);
+                cartItemsContainer.appendChild(itemElement);
             });
+
+            totalPriceElement.innerText = total;
         }
 
-        function increaseQuantity(id) {
-            const item = cart.items.find(item => item.id === id);
-            if (item) {
-                item.quantity++;
-                document.getElementById(`quantity-${id}`).innerText = item.quantity;
-                updateTotalPrice();
-            }
+        function updateQuantity(id, action) {
+            const body = action === 'increase' ? `index=${id}` : `decrease=${id}`;
+            fetch(location.href, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body
+            }).then(() => fetchCart());
         }
-
-        function decreaseQuantity(id) {
-            const item = cart.items.find(item => item.id === id);
-            if (item && item.quantity > 1) {
-                item.quantity--;
-                document.getElementById(`quantity-${id}`).innerText = item.quantity;
-                updateTotalPrice();
-            }
-        }
-
 
         function removeItem(id) {
-            const index = cart.items.findIndex(item => item.id === id);
-            if (index > -1) {
-                cart.items.splice(index, 1);
-                document.querySelector(`.cart-item[data-id="${id}"]`).remove();
-            }
-            updateTotalPrice();
+            fetch(location.href, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `delete=${id}`
+            }).then(() => fetchCart());
         }
 
-        function saveCart() {
-            const cartData = cart.items.map(item => ({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-            }));
-            localStorage.setItem('cart', JSON.stringify(cartData));
-        }
-
-        renderCart();
-        updateTotalPrice();
+        fetchCart();
     </script>
 </body>
 </html>
