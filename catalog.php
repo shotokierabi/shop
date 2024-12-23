@@ -128,7 +128,7 @@ include('controllers/prod.php'); ?>
                     <span class="star">☆</span>
                 </div>
                 <p class="price">93.99</p>
-                <button class="add-to-cart" onclick="addToCart(4)">Добавить в корзину</button>
+                <button class="add-to-cart" onclick="addToCart(5)">Добавить в корзину</button>
             </div>
 
             <div class="product-card" data-category="meat" data-discount="false" data-rating="4.5">
@@ -142,7 +142,7 @@ include('controllers/prod.php'); ?>
                     <span class="star">☆</span>
                 </div>
                 <p class="price">103.99</p>
-                <button class="add-to-cart" onclick="addToCart(5)">Добавить в корзину</button>
+                <button class="add-to-cart" onclick="addToCart(6)">Добавить в корзину</button>
             </div>
 
             <div class="product-card" data-category="dairy" data-discount="false" data-rating="4.5">
@@ -156,7 +156,7 @@ include('controllers/prod.php'); ?>
                     <span class="star">☆</span>
                 </div>
                 <p class="price">180.99</p>
-                <button class="add-to-cart" onclick="addToCart(6)">Добавить в корзину</button>
+                <button class="add-to-cart" onclick="addToCart(7)">Добавить в корзину</button>
             </div>
 
         </section>
