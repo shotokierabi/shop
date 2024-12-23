@@ -1,5 +1,7 @@
 <?php
 session_start();
+include('path.php');
+include('controllers/prod.php');
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
@@ -7,12 +9,28 @@ if (!isset($_SESSION['cart'])) {
 
 if (isset($_POST['index'])) {
     $productIndex = $_POST['index'];
-    $_SESSION['cart'][] = [
-        'id' => $productIndex,
-        'name' => "Товар $productIndex",
-        'price' => 500,
-        'quantity' => 1
-    ];
+
+    $product = $prod->getProductById($productIndex);
+
+    if ($product) {
+        $found = false;
+        foreach ($_SESSION['cart'] as &$item) {
+            if ($item['id'] == $productIndex) {
+                $item['quantity'] += 1;
+                $found = true;
+                break;
+            }
+        }
+
+        if (!$found) {
+            $_SESSION['cart'][] = [
+                'id' => $product['id_product'],
+                'name' => $product['name'],
+                'price' => $product['price'],
+                'quantity' => 1
+            ];
+        }
+    }
 }
 ?>
 
@@ -169,17 +187,22 @@ if (isset($_POST['index'])) {
 
         function increaseQuantity(id) {
             const item = cart.items.find(item => item.id === id);
-            if (item) item.quantity++;
-            document.getElementById(`quantity-${id}`).innerText = item.quantity;
-            updateTotalPrice();
+            if (item) {
+                item.quantity++;
+                document.getElementById(`quantity-${id}`).innerText = item.quantity;
+                updateTotalPrice();
+            }
         }
 
         function decreaseQuantity(id) {
             const item = cart.items.find(item => item.id === id);
-            if (item && item.quantity > 1) item.quantity--;
-            document.getElementById(`quantity-${id}`).innerText = item.quantity;
-            updateTotalPrice();
+            if (item && item.quantity > 1) {
+                item.quantity--;
+                document.getElementById(`quantity-${id}`).innerText = item.quantity;
+                updateTotalPrice();
+            }
         }
+
 
         function removeItem(id) {
             const index = cart.items.findIndex(item => item.id === id);
