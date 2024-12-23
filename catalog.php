@@ -163,7 +163,7 @@ include('controllers/prod.php'); ?>
     </div>
     <script>
         function addToCart(productIndex) {
-            fetch('cart_shop.php', {
+            fetch('shop_cart.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
