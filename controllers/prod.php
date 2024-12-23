@@ -10,7 +10,11 @@ $categoryAll = selectAll('category');
 $id_product = $_GET['id'];
 $prod = selectOne('product', ['id_product' => $id_product]);
 
-
+public function getProductById($id) {
+    $query = $this->db->prepare("SELECT id_product, name, price FROM products WHERE id_product = ?");
+    $query->execute([$id]);
+    return $query->fetch(PDO::FETCH_ASSOC);
+}
 
 //Создание категории
 // if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['topic-create'])) {
