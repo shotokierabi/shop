@@ -73,6 +73,92 @@ include('controllers/prod.php'); ?>
                     <button class="add-to-cart" onclick="addToCart(1)">Добавить в корзину</button>
                 </div>
             <?php endforeach; ?>
+
+            <div class="product-card" data-category="fruits" data-discount="false" data-rating="4.5">
+                <img src="img/appleRed.jpg" alt="Яблоко">
+                <h2>Яблоко</h2>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">☆</span>
+                </div>
+                <p class="price">100.99</p>
+                <button class="add-to-cart" onclick="addToCart(2)">Добавить в корзину</button>
+            </div>
+
+            <div class="product-card" data-category="vegetables" data-discount="false" data-rating="4.5">
+                <img src="img/tomato.jpg" alt="Помидор">
+                <h2>Помидор</h2>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">☆</span>
+                </div>
+                <p class="price">90.99</p>
+                <button class="add-to-cart" onclick="addToCart(3)">Добавить в корзину</button>
+            </div>
+
+            <div class="product-card" data-category="confectionery" data-discount="true" data-rating="5">
+                <img src="img/cake.jpg" alt="Кексик">
+                <h2>Кексик</h2>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="price">900.99</p>
+                <p class="discount">Скидка 3%!</p>
+                <button class="add-to-cart" onclick="addToCart(4)">Добавить в корзину</button>
+            </div>
+
+            <div class="product-card" data-category="meat" data-discount="false" data-rating="4.5">
+                <img src="img/fish.jpg" alt="Рыба">
+                <h2>Рыба</h2>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">☆</span>
+                </div>
+                <p class="price">93.99</p>
+                <button class="add-to-cart" onclick="addToCart(4)">Добавить в корзину</button>
+            </div>
+
+            <div class="product-card" data-category="meat" data-discount="false" data-rating="4.5">
+                <img src="img/mit.jpg" alt="Мясо">
+                <h2>Мясо</h2>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">☆</span>
+                </div>
+                <p class="price">103.99</p>
+                <button class="add-to-cart" onclick="addToCart(5)">Добавить в корзину</button>
+            </div>
+
+            <div class="product-card" data-category="dairy" data-discount="false" data-rating="4.5">
+                <img src="img/milk.jpg" alt="Молоко">
+                <h2>Молоко</h2>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">☆</span>
+                </div>
+                <p class="price">180.99</p>
+                <button class="add-to-cart" onclick="addToCart(6)">Добавить в корзину</button>
+            </div>
+
         </section>
     </div>
     <script>
