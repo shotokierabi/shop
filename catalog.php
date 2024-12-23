@@ -70,7 +70,7 @@ include('controllers/prod.php'); ?>
                         <p class="price"><?= $p['price'] ?></p>
                         <p class="discount">Скидка 20%!</p>
                     </a>
-                    <button class="add-to-cart">Добавить в корзину</button>
+                    <button class="add-to-cart" onclick="addToCart(1)">Добавить в корзину</button>
                 </div>
             <?php endforeach; ?>
 
@@ -85,7 +85,7 @@ include('controllers/prod.php'); ?>
                     <span class="star">☆</span>
                 </div>
                 <p class="price">100.99</p>
-                <button class="add-to-cart">Добавить в корзину</button>
+                <button class="add-to-cart" onclick="addToCart(2)">Добавить в корзину</button>
             </div>
 
             <div class="product-card" data-category="vegetables" data-discount="false" data-rating="4.5">
@@ -99,7 +99,7 @@ include('controllers/prod.php'); ?>
                     <span class="star">☆</span>
                 </div>
                 <p class="price">90.99</p>
-                <button class="add-to-cart">Добавить в корзину</button>
+                <button class="add-to-cart" onclick="addToCart(3)">Добавить в корзину</button>
             </div>
 
             <div class="product-card" data-category="confectionery" data-discount="true" data-rating="5">
@@ -114,7 +114,7 @@ include('controllers/prod.php'); ?>
                 </div>
                 <p class="price">900.99</p>
                 <p class="discount">Скидка 3%!</p>
-                <button class="add-to-cart">Добавить в корзину</button>
+                <button class="add-to-cart" onclick="addToCart(4)">Добавить в корзину</button>
             </div>
 
             <div class="product-card" data-category="meat" data-discount="false" data-rating="4.5">
@@ -128,7 +128,7 @@ include('controllers/prod.php'); ?>
                     <span class="star">☆</span>
                 </div>
                 <p class="price">93.99</p>
-                <button class="add-to-cart">Добавить в корзину</button>
+                <button class="add-to-cart" onclick="addToCart(4)">Добавить в корзину</button>
             </div>
 
             <div class="product-card" data-category="meat" data-discount="false" data-rating="4.5">
@@ -142,7 +142,7 @@ include('controllers/prod.php'); ?>
                     <span class="star">☆</span>
                 </div>
                 <p class="price">103.99</p>
-                <button class="add-to-cart">Добавить в корзину</button>
+                <button class="add-to-cart" onclick="addToCart(5)">Добавить в корзину</button>
             </div>
 
             <div class="product-card" data-category="dairy" data-discount="false" data-rating="4.5">
@@ -156,12 +156,32 @@ include('controllers/prod.php'); ?>
                     <span class="star">☆</span>
                 </div>
                 <p class="price">180.99</p>
-                <button class="add-to-cart">Добавить в корзину</button>
+                <button class="add-to-cart" onclick="addToCart(6)">Добавить в корзину</button>
             </div>
 
         </section>
     </div>
-
+    <script>
+        function addToCart(productIndex) {
+            fetch('cart-shop.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `index=${encodeURIComponent(productIndex)}`,
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Товар добавлен в корзину');
+                } else {
+                    alert('Ошибка при добавлении товара в корзину');
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        }
+    </script>
     <script src="search.js"></script>
     <?php include('footer.php'); ?>
 
