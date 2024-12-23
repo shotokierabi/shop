@@ -1,5 +1,5 @@
 <?php
-include (SITE_ROOT . '/db/db.php');
+include(SITE_ROOT . '/db/db.php');
 
 $error_msg = [];
 $id = '';
@@ -10,8 +10,18 @@ $categoryAll = selectAll('category');
 $id_product = $_GET['id'];
 $prod = selectOne('product', ['id_product' => $id_product]);
 
-public function getProductById($id) {
-    $query = $this->db->prepare("SELECT id_product, name, price FROM products WHERE id_product = ?");
+//function getProductById($id) {
+//       $query = $this->db->prepare("SELECT id_product, name, price FROM products WHERE id_product = ?");
+//    $query->execute([$id]);
+//    return $query->fetch(PDO::FETCH_ASSOC);
+//}
+
+function getProductById($db, $id)
+{
+    $db = new PDO('mysql:host=localhost;dbname=Shop', 'root', 'qwerty');
+    $product = getProductById($db, 1);
+    print_r($product);
+    $query = $db->prepare("SELECT id_product, name, price FROM products WHERE id_product = ?");
     $query->execute([$id]);
     return $query->fetch(PDO::FETCH_ASSOC);
 }
