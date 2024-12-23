@@ -5,6 +5,8 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
+include('path/to/database/connection.php');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['index'])) {
         $productIndex = intval($_POST['index']);
