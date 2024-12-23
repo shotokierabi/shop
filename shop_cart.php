@@ -8,10 +8,11 @@ if (!isset($_SESSION['cart'])) {
 include('path/to/database/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['index'])) {
-        $productIndex = intval($_POST['index']);
-        $exists = false;
+    $action = $_POST['action'] ?? null;
+    $productIndex = intval($_POST['id'] ?? 0);
 
+    if ($action === 'increase') {
+        $exists = false;
         foreach ($_SESSION['cart'] as &$item) {
             if ($item['id'] === $productIndex) {
                 $item['quantity']++;
@@ -21,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!$exists) {
-            $db = new PDO('mysql:host=localhost;dbname=your_database;charset=utf8', 'username', 'password'); // Замените на свои данные
             $query = $db->prepare("SELECT id_product AS id, name, price FROM products WHERE id_product = ?");
             $query->execute([$productIndex]);
             $product = $query->fetch(PDO::FETCH_ASSOC);
@@ -31,27 +31,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['cart'][] = $product;
             }
         }
-    }
-
-    if (isset($_POST['delete'])) {
-        $productIndex = intval($_POST['delete']);
-        $_SESSION['cart'] = array_filter($_SESSION['cart'], function ($item) use ($productIndex) {
-            return $item['id'] !== $productIndex;
-        });
-    }
-
-    if (isset($_POST['decrease'])) {
-        $productIndex = intval($_POST['decrease']);
+    } elseif ($action === 'decrease') {
         foreach ($_SESSION['cart'] as &$item) {
             if ($item['id'] === $productIndex && $item['quantity'] > 1) {
                 $item['quantity']--;
                 break;
             }
         }
+    } elseif ($action === 'delete') {
+        $_SESSION['cart'] = array_filter($_SESSION['cart'], function ($item) use ($productIndex) {
+            return $item['id'] !== $productIndex;
+        });
     }
 
     header('Content-Type: application/json');
-    echo json_encode(['cart' => $_SESSION['cart']]);
+    echo json_encode(['cart' => array_values($_SESSION['cart'])]);
     exit;
 }
 ?>
@@ -127,6 +121,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             cartItemsContainer.innerHTML = '';
             let total = 0;
 
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Корзина пуста.</p>';
+                totalPriceElement.innerText = 0;
+                return;
+            }
+
             cart.forEach(item => {
                 total += item.price * item.quantity;
                 const itemElement = document.createElement('div');
@@ -141,17 +141,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button onclick="updateQuantity(${item.id}, 'decrease')">-</button>
                         <span>${item.quantity}</span>
                         <button onclick="updateQuantity(${item.id}, 'increase')">+</button>
-                        <button onclick="removeItem(${item.id})">Удалить</button>
+                        <button onclick="updateQuantity(${item.id}, 'delete')">Удалить</button>
                     </div>
                 `;
                 cartItemsContainer.appendChild(itemElement);
             });
 
             totalPriceElement.innerText = total;
-        }
+}
 
         function updateQuantity(id, action) {
-            const body = action === 'increase' ? `index=${id}` : `decrease=${id}`;
+            const body = new URLSearchParams({ id, action }).toString();
             fetch(location.href, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -159,15 +159,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }).then(() => fetchCart());
         }
 
-        function removeItem(id) {
-            fetch(location.href, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `delete=${id}`
-            }).then(() => fetchCart());
-        }
-
         fetchCart();
+
     </script>
 </body>
 </html>
