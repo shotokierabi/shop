@@ -52,28 +52,6 @@ include('controllers/prod.php'); ?>
 
         <!-- Основной контент с каталогом товаров -->
         <section class="catalog">
-
-
-            <!-- Добавьте другие товары, если нужно -->
-            <?php foreach ($prodAll as $key => $p): ?>
-                <div class="product-card" data-category="bread" data-discount=<?= $p['sale'] ?> data-rating=<?= $p['rating'] ?>>
-                    <a href="produc_info.php?id=<?= $p['id_product'] ?>">
-                        <img src="<?= BASE_URL . 'img/' . trim($p['img']) ?>">
-                        <h2><?= $p['name'] ?></h2>
-                        <div class="rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">☆</span>
-                        </div>
-                        <p class="price"><?= $p['price'] ?></p>
-                        <p class="discount">Скидка 20%!</p>
-                    </a>
-                    <button class="add-to-cart">Добавить в корзину</button>
-                </div>
-            <?php endforeach; ?>
-
             <div class="product-card" data-category="fruits" data-discount="false" data-rating="4.5">
                 <img src="img/appleRed.jpg" alt="Яблоко">
                 <h2>Яблоко</h2>
