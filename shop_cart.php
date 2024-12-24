@@ -132,35 +132,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const itemElement = document.createElement('div');
                 itemElement.classList.add('cart-item');
                 itemElement.dataset.id = item.id;
+
                 itemElement.innerHTML = `
-                    <div>
+                    <div class="item-info">
                         <p>${item.name}</p>
                         <p>${item.price} ₽</p>
                     </div>
                     <div class="item-controls">
                         <button onclick="updateQuantity(${item.id}, 'decrease')">-</button>
-                        <span>${item.quantity}</span>
+                        <span id="quantity-${item.id}">${item.quantity}</span>
                         <button onclick="updateQuantity(${item.id}, 'increase')">+</button>
                         <button onclick="updateQuantity(${item.id}, 'delete')">Удалить</button>
                     </div>
                 `;
+
                 cartItemsContainer.appendChild(itemElement);
             });
 
             totalPriceElement.innerText = total;
-}
+        }
 
         function updateQuantity(id, action) {
             const body = new URLSearchParams({ id, action }).toString();
+
             fetch(location.href, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body
-            }).then(() => fetchCart());
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const cart = data.cart;
+                    const item = cart.find(item => item.id === id);
+                    if (item) {
+                        document.getElementById(`quantity-${id}`).innerText = item.quantity;
+                    }
+                    let total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+                    totalPriceElement.innerText = total;
+                })
+                .catch(error => console.error('Ошибка обновления корзины:', error));
         }
-
         fetchCart();
-
     </script>
 </body>
 </html>
