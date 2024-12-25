@@ -40,6 +40,7 @@ body {
     font-size: 14px;
     font-weight: bold;
     border-radius: 5px;
+    z-index: 10;
 }
 
 .details h2 {
@@ -54,12 +55,25 @@ body {
     margin-bottom: 10px;
 }
 
-#product-price {
-    font-weight: bold;
-    font-size: 20px;
-    color: #FF2626;
+/* Старая цена */
+.old-price {
+    font-size: 16px; /* Меньше размер */
+    color: #888;
+    text-decoration: line-through; /* Перечеркнутая */
+    margin-right: 10px;
+    display: inline-block;
+    font-weight: normal;
 }
 
+/* Новая цена */
+.price {
+    font-size: 28px; /* Больше размер */
+    font-weight: bold; /* Жирный */
+    color: #FF2626;
+    display: inline-block;
+}
+
+/* Кнопка "Добавить в корзину" */
 #add-to-cart {
     background-color: #FF2626;
     color: white;
