@@ -31,22 +31,53 @@ body {
 
 /* О компании */
 .about {
-    background-color: #1FCECE;
-    padding: 40px;
+    background: linear-gradient(135deg, #1FCECE, #389B9B); /* Градиентный фон */
+    padding: 50px;
     margin-top: 40px;
-    border-radius: 10px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Тень для глубины */
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Плавный переход для анимации */
+}
+
+.about:hover {
+    transform: translateY(-5px); /* Поднятие блока при наведении */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2); /* Увеличение тени */
 }
 
 .about h2 {
     color: #fff;
-    font-size: 28px;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center; /* Выравнивание заголовка по центру */
+    letter-spacing: 1px; /* Увеличение расстояния между буквами */
 }
 
 .about p {
     color: #fff;
     font-size: 18px;
-    line-height: 1.6;
+    line-height: 1.8;
+    text-align: center; /* Выравнивание текста по центру */
+    max-width: 800px;
+    margin: 0 auto; /* Центрирование текста */
 }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .about {
+        padding: 30px;
+    }
+
+    .about h2 {
+        font-size: 28px;
+    }
+
+    .about p {
+        font-size: 16px;
+    }
+}
+
 
 /* Сведения о генеральном директоре */
 .director {
@@ -56,15 +87,38 @@ body {
     border-radius: 10px;
 }
 
-.director h3 {
-    color: #fff;
-    font-size: 24px;
+/* Контейнер для фото и информации */
+.director-content {
+    display: flex;
+    align-items: center; /* Вертикальное выравнивание */
+    justify-content: flex-start; /* Расположение элементов слева */
 }
 
-.director p {
-    color: #fff;
-    font-size: 18px;
+.director-photo {
+    margin-right: 20px; /* Отступ между фото и текстом */
 }
+
+.director-photo img {
+    width: 150px; /* Размер изображения */
+    height: 150px;
+    border-radius: 50%; /* Круглая фотография */
+    object-fit: cover; /* Обрезка изображения по размеру */
+}
+
+.director-info {
+    color: #fff;
+}
+
+.director-info h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.director-info p {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
 
 /* Кнопки */
 .button {
