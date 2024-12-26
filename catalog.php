@@ -70,16 +70,11 @@ include('controllers/prod.php');
                         ?>
                     </div>
                     <div class="price-container">
-                        <?php if ($p['sale']): ?>
-                            <p class="old-price"><?= $p['price'] ?></p>
-                            <p class="price"><?= $p['price'] - $p['sale'] ?></p>
-                        <?php else: ?>
-                            <p class="price"><?= $p['price'] ?></p>
-                        <?php endif; ?>
+                        <p class="old-price"></p>
+                        <p class="price"></p>
+
                     </div>
-                    <?php if ($p['sale']): ?>
-                        <div class="discount"><?= $p['sale'] ?>%</div>
-                    <?php endif; ?>
+                    <div class="discount"><?= $p['sale'] ?>%</div>
                 </a>
                 <button class="add-to-cart"
                         onclick="addToCart(<?= $p['id_product'] ?>, '<?= htmlspecialchars($p['name']) ?>',
