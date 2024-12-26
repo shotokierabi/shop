@@ -21,7 +21,7 @@ include('controllers/account.php'); ?>
         <div class="banner-text">
             <h1>Скидка на Мандарины!</h1>
             <p>Только до конца месяца — скидка 20% на все мандарины!</p>
-            <button class="button">Купить сейчас</button>
+            <a href="catalog.php" ><button class="button">Купить сейчас</button></a>
         </div>
     </div>
 
@@ -51,10 +51,11 @@ include('controllers/account.php'); ?>
         <h3>Сведения о генеральном директоре</h3>
         <div class="director-content">
             <div class="director-photo">
-                <img src="img/boss.jpg" alt="Фотография генерального директора" />
+                <img src="img/boss.jpg" alt="Фотография генерального директора"/>
             </div>
             <div class="director-info">
-                <p>Наш генеральный директор - Ремез. Позже тут появится его фотография.</p>
+                <p>Наш генеральный директор - Ремез Алексей. Очень ответственный человек, который всегда обращает
+                    внимания на маленькие детали. С ним наш магазин будет процветать.</p>
             </div>
         </div>
     </div>
