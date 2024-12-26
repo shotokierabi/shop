@@ -66,35 +66,21 @@ include('controllers/prod.php'); ?>
 
                     <!-- Скидка в правом верхнем углу -->
                     <div class="discount" style="display: none;"></div>
-                    <button class="add-to-cart" onclick="addToCart(1)">Добавить в корзину</button>
                 </a>
+                    <button class="add-to-cart"
+                            onclick="addToCart(<?= $p['id_product'] ?>, '<?= htmlspecialchars($p['name']) ?>',
+                            <?= $p['price'] ?>, '<?= BASE_URL . 'img/' . trim($p['img']) ?>')">
+                        Добавить в корзину
+                    </button>
+
+
             </div>
         <?php endforeach; ?>
     </section>
 </div>
-<script>
-    function addToCart(productIndex) {
-        fetch('shop_cart.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `index=${encodeURIComponent(productIndex)}`,
-        })
-            .then(response => {
-                if (response.ok) {
-                    alert('Товар добавлен в корзину');
-                } else {
-                    alert('Ошибка при добавлении товара в корзину');
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка:', error);
-            });
-    }
-</script>
 <script src="search.js"></script>
 <script src="priceForSale.js"></script>
+<script src="addCart.js"></script>
 <?php include('footer.php'); ?>
 
 </body>

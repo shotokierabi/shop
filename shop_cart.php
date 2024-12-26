@@ -1,207 +1,100 @@
 <?php
+include('path.php');
 session_start();
 
+// Инициализация корзины, если её нет
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
 
-if (isset($_POST['index'])) {
-    $productIndex = $_POST['index'];
-    $_SESSION['cart'][] = [
-        'id' => $productIndex,
-        'name' => "Товар $productIndex",
-        'price' => 500,
-        'quantity' => 1
-    ];
+// Обновление количества товара
+if (isset($_POST['update_quantity'])) {
+    $id = $_POST['id'];
+    $quantity = max(1, (int)$_POST['quantity']); // Минимум 1
+
+    foreach ($_SESSION['cart'] as &$item) {
+        if ($item['id'] == $id) {
+            $item['quantity'] = $quantity;
+            break;
+        }
+    }
+    unset($item); // Разорвать ссылку на последний элемент
 }
+
+// Удаление товара из корзины
+if (isset($_POST['remove'])) {
+    $id = $_POST['remove'];
+    $_SESSION['cart'] = array_filter($_SESSION['cart'], function ($item) use ($id) {
+        return $item['id'] != $id;
+    });
+}
+
+// Очистка корзины
+if (isset($_POST['clear'])) {
+    $_SESSION['cart'] = [];
+}
+
+// Рассчет итоговой суммы
+$total = array_reduce($_SESSION['cart'], function ($sum, $item) {
+    return $sum + $item['price'] * $item['quantity'];
+}, 0);
+
 ?>
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Корзина</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-        }
-        .container {
-            width: 1360px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-        .item-info {
-            display: flex;
-            align-items: center;
-        }
-        .item-info img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            margin-right: 15px;
-            border-radius: 5px;
-        }
-        .item-name {
-            font-size: 18px;
-            margin: 0;
-        }
-        .item-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .item-controls button {
-            background-color: #ff6b6b;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        .item-controls button:hover {
-            background-color: #ff4c4c;
-        }
-        .item-quantity {
-            font-size: 16px;
-        }
-        .total-price {
-            text-align: right;
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        .checkout-button {
-            display: block;
-            text-align: center;
-            margin: 30px auto 0;
-            background-color: #28a745;
-            color: #fff;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .checkout-button:hover {
-            background-color: #218838;
-        }
-    </style>
+    <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="style_a.css">
 </head>
+
 <body>
-    <div class="container">
-        <h1>Корзина</h1>
-        <div id="cart-items">
+<?php include('header.php'); ?>
+
+<div class="container">
+    <h1>Корзина</h1>
+
+    <?php if (empty($_SESSION['cart'])): ?>
+        <p>Ваша корзина пуста</p>
+    <?php else: ?>
+        <div class="cart-items">
+            <?php foreach ($_SESSION['cart'] as $item): ?>
+                <div class="cart-item">
+                    <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" class="cart-item-img">
+                    <div class="cart-item-details">
+                        <h2><?= htmlspecialchars($item['name']) ?></h2>
+                        <form method="post" class="update-quantity-form">
+                            <input type="hidden" name="id" value="<?= $item['id'] ?>">
+                            <label>
+                                Количество:
+                                <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="1">
+                            </label>
+                            <button type="submit" name="update_quantity">Обновить</button>
+                        </form>
+                        <p>Цена: <?= $item['price'] * $item['quantity'] ?> ₽</p>
+                        <form method="post">
+                            <button type="submit" name="remove" value="<?= $item['id'] ?>">Удалить</button>
+                        </form>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
-        <p class="total-price">Итоговая цена: <span id="total-price">0</span> ₽</p>
-        <a href="Оплата.html" class="checkout-button" onclick="saveCart()">Перейти к оплате</a>
-    </div>
 
-    <script>
-        const cart = {
-            items: []
-        };
+        <div class="cart-summary">
+            <p><strong>Итого:</strong> <?= $total ?> ₽</p>
+            <button class="checkout-btn" onclick="alert('Функция оплаты пока не реализована')">Оплатить</button>
+        </div>
+        <form method="post">
+            <button type="submit" name="clear" class="clear-cart-btn">Очистить корзину</button>
+        </form>
+    <?php endif; ?>
+</div>
 
-        <?php
-        if (isset($_SESSION['cart'])):
-            foreach ($_SESSION['cart'] as $item):
-        ?>
-            cart.items.push({
-                id: <?php echo $item['id']; ?>,
-                name: "<?php echo $item['name']; ?>",
-                price: <?php echo $item['price']; ?>, 
-                quantity: <?php echo $item['quantity']; ?>
-            });
-        <?php endforeach; endif; ?>
-
-        function updateTotalPrice() {
-            let total = 0;
-            cart.items.forEach(item => {
-                total += item.price * item.quantity;
-            });
-            document.getElementById('total-price').innerText = total;
-        }
-
-        function renderCart() {
-            const cartItemsContainer = document.getElementById('cart-items');
-            cartItemsContainer.innerHTML = '';
-
-            cart.items.forEach(item => {
-                const cartItemElement = document.createElement('div');
-                cartItemElement.classList.add('cart-item');
-                cartItemElement.dataset.id = item.id;
-                cartItemElement.innerHTML = `
-                    <div class="item-info">
-                        <img src="product${item.id}.jpg" alt="Товар ${item.id}">
-                        <p class="item-name">${item.name}</p>
-                    </div>
-                    <div class="item-controls">
-                        <button onclick="decreaseQuantity(${item.id})">-</button>
-                        <span class="item-quantity" id="quantity-${item.id}">${item.quantity}</span>
-                        <button onclick="increaseQuantity(${item.id})">+</button>
-                        <button onclick="removeItem(${item.id})">Удалить</button>
-                    </div>
-                `;
-                cartItemsContainer.appendChild(cartItemElement);
-            });
-        }
-
-        function increaseQuantity(id) {
-            const item = cart.items.find(item => item.id === id);
-            if (item) item.quantity++;
-            document.getElementById(`quantity-${id}`).innerText = item.quantity;
-            updateTotalPrice();
-        }
-
-        function decreaseQuantity(id) {
-            const item = cart.items.find(item => item.id === id);
-            if (item && item.quantity > 1) item.quantity--;
-            document.getElementById(`quantity-${id}`).innerText = item.quantity;
-            updateTotalPrice();
-        }
-
-        function removeItem(id) {
-            const index = cart.items.findIndex(item => item.id === id);
-            if (index > -1) {
-                cart.items.splice(index, 1);
-                document.querySelector(`.cart-item[data-id="${id}"]`).remove();
-            }
-            updateTotalPrice();
-        }
-
-        function saveCart() {
-            const cartData = cart.items.map(item => ({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                quantity: item.quantity,
-            }));
-            localStorage.setItem('cart', JSON.stringify(cartData));
-        }
-
-        renderCart();
-        updateTotalPrice();
-    </script>
+<?php include('footer.php'); ?>
 </body>
+
 </html>

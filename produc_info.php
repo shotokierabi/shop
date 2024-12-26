@@ -42,7 +42,11 @@ include('controllers/prod.php'); ?>
                     <p class="price"><?= $prod['price'] * (1 - $prod['sale'] / 100) ?> ₽</p> <!-- Новая цена -->
                 </div>
 
-                <button id="add-to-cart">Добавить в корзину</button>
+                <button id="add-to-cart" class="add-to-cart"
+                        onclick="addToCart(<?= $prod['id_product'] ?>, '<?= htmlspecialchars($prod['name']) ?>',
+                        <?= $prod['price'] ?>, '<?= BASE_URL . 'img/' . trim($prod['img']) ?>')">
+                    Добавить в корзину
+                </button>
             </div>
         <?php endif; ?>
     </div>
@@ -50,6 +54,7 @@ include('controllers/prod.php'); ?>
 
 
 <script src="priceForSale.js"></script>
+<script src="addCart.js"></script>
 <?php include('footer.php'); ?>
 
 </body>
