@@ -6,6 +6,7 @@ $id = '';
 $name = '';
 $prodAll = selectAll('product');
 $categoryAll = selectAll('category');
+$productCategories = selectAll('product_category');
 
 $id_product = $_GET['id'];
 $prod = selectOne('product', ['id_product' => $id_product]);

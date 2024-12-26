@@ -1,5 +1,7 @@
 <?php include('path.php');
-include('controllers/prod.php'); ?>
+include('controllers/prod.php');
+
+?>
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -31,9 +33,13 @@ include('controllers/prod.php'); ?>
         <ul>
             <li><a href="#" id="category-all" data-category="all" onclick="filterByCategory('all')">Все товары</a>
             </li>
-            <?php foreach ($categoryAll as $key => $c): ?>
-                <li><a href="#" id="<?= $c['id_category'] ?>" data-category="<?= $c['name'] ?>"
-                       onclick="filterByCategory('<?= $c['id_category'] ?>')"><?= $c['name'] ?></a></li>
+            <?php foreach ($categoryAll as $key => $category): ?>
+                <li>
+                    <a href="#" data-category="<?= $category['id_category'] ?>"
+                       onclick="filterByCategory('<?= $category['id_category'] ?>')">
+                        <?= $category['name'] ?>
+                    </a>
+                </li>
             <?php endforeach; ?>
         </ul>
     </aside>
@@ -41,39 +47,45 @@ include('controllers/prod.php'); ?>
     <!-- Основной контент с каталогом товаров -->
     <section class="catalog">
         <?php foreach ($prodAll as $key => $p): ?>
-            <div class="product-card" data-discount=<?= $p['sale'] ?> data-price=<?= $p['price'] ?>>
+            <?php
+            // Получаем список категорий для текущего товара
+            $categoriesForProduct = array_filter($productCategories, function ($pc) use ($p) {
+                return $pc['id_product'] === $p['id_product'];
+            });
+            $categoriesIds = implode(',', array_column($categoriesForProduct, 'id_category'));
+            ?>
+            <div class="product-card"
+                 data-categories="<?= $categoriesIds ?>"
+                 data-discount="<?= $p['sale'] ?>"
+                 data-price="<?= $p['price'] ?>">
                 <a href="produc_info.php?id=<?= $p['id_product'] ?>" class="product-link">
                     <img src="<?= BASE_URL . 'img/' . trim($p['img']) ?>">
                     <h2><?= $p['name'] ?></h2>
                     <div class="rating">
                         <?php
-                        $rating = $p['rating']; // Рейтинг товара
+                        $rating = $p['rating'];
                         for ($i = 1; $i <= 5; $i++) {
-                            // Если рейтинг больше или равен текущей звезде, ставим заполненную звезду
-                            if ($i <= $rating) {
-                                echo '<span class="star filled">★</span>';
-                            } else {
-                                echo '<span class="star">☆</span>';
-                            }
+                            echo $i <= $rating ? '<span class="star filled">★</span>' : '<span class="star">☆</span>';
                         }
                         ?>
                     </div>
-                    <!-- Цена товара -->
                     <div class="price-container">
-                        <p class="old-price">3</p> <!-- Старая цена (если есть скидка) -->
-                        <p class="price">3</p> <!-- Новая цена -->
+                        <?php if ($p['sale']): ?>
+                            <p class="old-price"><?= $p['price'] ?></p>
+                            <p class="price"><?= $p['price'] - $p['sale'] ?></p>
+                        <?php else: ?>
+                            <p class="price"><?= $p['price'] ?></p>
+                        <?php endif; ?>
                     </div>
-
-                    <!-- Скидка в правом верхнем углу -->
-                    <div class="discount" style="display: none;"></div>
+                    <?php if ($p['sale']): ?>
+                        <div class="discount"><?= $p['sale'] ?>%</div>
+                    <?php endif; ?>
                 </a>
-                    <button class="add-to-cart"
-                            onclick="addToCart(<?= $p['id_product'] ?>, '<?= htmlspecialchars($p['name']) ?>',
-                            <?= $p['price'] ?>, '<?= BASE_URL . 'img/' . trim($p['img']) ?>')">
-                        Добавить в корзину
-                    </button>
-
-
+                <button class="add-to-cart"
+                        onclick="addToCart(<?= $p['id_product'] ?>, '<?= htmlspecialchars($p['name']) ?>',
+                        <?= $p['price'] ?>, '<?= BASE_URL . 'img/' . trim($p['img']) ?>')">
+                    Добавить в корзину
+                </button>
             </div>
         <?php endforeach; ?>
     </section>
