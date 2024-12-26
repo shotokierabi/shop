@@ -59,7 +59,7 @@ include('controllers/prod.php');
                  data-discount="<?= $p['sale'] ?>"
                  data-price="<?= $p['price'] ?>">
                 <a href="produc_info.php?id=<?= $p['id_product'] ?>" class="product-link">
-                    <img src="<?= BASE_URL . 'img/' . trim($p['img']) ?>">
+                    <div class="cont_img"><img src="<?= BASE_URL . 'img/' . trim($p['img']) ?>"></div>
                     <h2><?= $p['name'] ?></h2>
                     <div class="rating">
                         <?php

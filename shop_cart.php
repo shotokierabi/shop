@@ -50,6 +50,7 @@ $total = array_reduce($_SESSION['cart'], function ($sum, $item) {
     <title>Корзина</title>
     <link rel="stylesheet" href="cart.css">
     <link rel="stylesheet" href="style_a.css">
+    <script src="https://kit.fontawesome.com/9454dd7c20.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
